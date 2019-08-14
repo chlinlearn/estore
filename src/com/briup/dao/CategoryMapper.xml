@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+			"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.briup.dao.ICategoryDao">
+	<resultMap type="Category" id="CategoryResult">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="description" column="description"/>
+		<result property="parentId" column="parent_id"/>
+		<collection property="subCategories" column="id" select="findSubCategoriesById"/>
+	</resultMap>
+	<resultMap type="Category" id="Category">
+		<id property="id" column="id"/>
+		<result property="name" column="name"/>
+		<result property="description" column="description"/>		
+		<result property="parentId" column="parent_id"/>
+	</resultMap>
+	
+	<select id="findSubCategoriesById" resultMap="Category" parameterType="int">
+		select * from e_category where parent_id=#{id}
+	</select>
+	
+	<select id="findSupCategories" resultMap="CategoryResult">
+		select * from e_category where parent_id is null
+	</select>
+</mapper>
